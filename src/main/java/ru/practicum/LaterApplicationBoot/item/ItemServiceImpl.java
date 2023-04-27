@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -11,14 +12,16 @@ class ItemServiceImpl implements ItemService {
     private final ItemRepository repository;
 
     @Override
-    public List<Item> getItems(long userId) {
-        return repository.findByUserId(userId);
+    public List<ItemDto> getItems(long userId) {
+        return repository.findByUserId(userId).stream()
+                .map(ItemMapper::toItemDto)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public Item addNewItem(long userId, Item item) {
-        item.setUserId(userId);
-        return repository.save(item);
+    public ItemDto addNewItem(long userId, ItemDto itemDto) {
+        itemDto.setUserId(userId);
+        return ItemMapper.toItemDto(repository.save(ItemMapper.toItem(itemDto)));
     }
 
     @Override
