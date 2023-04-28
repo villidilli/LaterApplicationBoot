@@ -2,6 +2,7 @@ package ru.practicum.LaterApplicationBoot.item;
 
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
 import java.util.*;
 
 @Component
